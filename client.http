@@ -1,0 +1,49 @@
+###
+GET http://localhost:3009
+
+###
+POST http://localhost:3009
+Content-Type: application/json
+
+{
+    "codigo": 10001,
+    "nombreAlimento": "prueba99",
+    "nombreAlternos": ["Publico", "nAlterno", "langague"],
+    "timeCreation": "{{$datetime iso8601}}",
+    "createBy": "Darkdev9",
+    "agua": 0.32,
+    "energia": 0.0,
+    "proteina": 0.0,
+    "grasas": 0.0,
+    "carboHidratos": 0.0,
+    "fibraDietTotal": 0.0,
+    "ceniza": 0.0,
+    "calcio": 0.13,
+    "fosforo": 0.0,
+    "hierro": 0.0,
+    "tiamina": 0.0,
+    "riboflavina": 0.0,
+    "niacina": 0.0,
+    "vitaminaC": 0.0,
+    "vitaminaARetinol": 0.15,
+    "acGrasosMonSaturados": 0.69,
+    "acGrasosPolSaturados": 0.49,
+    "acGrasosSaturados": 0.0,
+    "colesterol": 0.0,
+    "potasio": 0.0,
+    "sodio": 0.0,
+    "zinc": 0.0,
+    "magnesio": 0.0,
+    "vitaminaB6": 0.0,
+    "vitaminaB12": 0.0,
+    "acidoFolico": 0.0,
+    "folatoEquFD": 0.0,
+    "fraccionComestible": 0.69,
+    "estadoRegistro": 1
+}
+
+###
+GET http://localhost:3009/6a0536ba500bbb9a2320f854
+
+###
+DELETE http://localhost:3009/6a0536ba500bbb9a2320f854
