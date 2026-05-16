@@ -1,7 +1,7 @@
-###
+### READ
 GET http://localhost:3009
 
-###
+### CREATE
 POST http://localhost:3009
 Content-Type: application/json
 
@@ -42,8 +42,25 @@ Content-Type: application/json
     "estadoRegistro": 1
 }
 
-###
-GET http://localhost:3009/6a0536ba500bbb9a2320f854
+### GET by ID
+GET http://localhost:3009/6a067d3ab6a988bbbd414440
 
-###
+### DELETE
 DELETE http://localhost:3009/6a0536ba500bbb9a2320f854
+6a0274ce64c657984a243e1a
+6a0274ce64c657984a243e1a
+6a0536ba500bbb9a2320f854
+6a027440b06c3ef12d5d463b
+
+### UPDATE
+PUT http://localhost:3009/6a0536ba500bbb9a2320f854
+Content-Type: application/json
+
+{
+    "codigo": 10001,
+    "nombreAlimento": "Updateprueba99VSCODE",
+    "nombreAlternos": ["UpdatePublico", "UpdatednAlterno"],
+    "timeCreation": "{{$datetime iso8601}}",
+    "createBy": "Darkdev9",
+    "URL": "DROP TABLE collection"
+}

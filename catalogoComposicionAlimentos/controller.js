@@ -7,17 +7,20 @@ class catalogoNutricionalController {
 
     static async read(req, res) {
         try {
-            console.log("usando controlador desde clase NUTRIONAL");
+            //Metodo para leer todos los datos de la collection
             const datos = await catalagoNutricionalModel.read();
             if (datos.length === 0) {
                 return res.status(400).send({ message: "No se hay datos o no se lograron leer" });
             }
             //DEBUG HERE: console.log(datos) 
+            //Retornamos los datos y codigo
+            console.log("Coleccion encontrada");
             return res.status(201).send(datos);
 
         } catch (error) {
             console.error(error);
             console.log("Error de conexion");
+            //Retornamos error de conexion
             return res.status(500).send({ message: "Internal Server Error" });
         }
 
@@ -25,15 +28,17 @@ class catalogoNutricionalController {
 
     static async create(req, res) {
         try {
-            const data = await validarSchemaCatalogo(req.body);
-            //Leemos si hay un error
-            console.error(data.error ?? "No hubo errores");
+            //Metodo para Insertar un documento
             //Validamos los tipos de datos
+            const data = await validarSchemaCatalogo(req.body);
+            //DEBUG HERE: console.log(data)            
+            //Manejamos el Error si uno de los datos no son validos
             if (!data.success) {
+                console.error(data.error);
                 return res.status(400).send({ message: data.error })
             }
 
-            //Creamos el objeto que vamos agregar a la coleccion
+            //Creamos el documento a insertar a la coleccion
             const input = {
                 codigo: data.data.codigo,
                 nombreAlimento: data.data.nombreAlimento,
@@ -159,10 +164,12 @@ class catalogoNutricionalController {
 
             //Insertamos el documento a la coleccion
             const result = await catalagoNutricionalModel.post({ input });
-
+            //Manejamos el error en caso que haya algun error en la insercion
             if (!result) {
                 return res.status(400).send({ message: "Error al ingresar documento" })
             }
+            //Mostramos el documento insertado satisfactioriamente
+            console.log("Documento Creado");
             return res.status(200).send({
                 message: "Alimento ingresado satisfactoriamente",
                 documento: result
@@ -170,6 +177,7 @@ class catalogoNutricionalController {
         } catch (error) {
             console.error(error);
             console.log("Error de conexion");
+            //Retornamos error de conexion
             return res.status(500).send({ message: "Internal Server Error" });
         }
 
@@ -177,15 +185,27 @@ class catalogoNutricionalController {
 
     static async getById(req, res) {
         try {
+            //Metodo para localizar un documento por _id
+            //Sanitizamos el ID obtenido de la URL
             const id = await validarIDParams(req.params.id);
-
+            //Mostramos el mensaje si el ID no es valido
             if (!id.success) {
-                console.log(id.error);
+                console.error(id.error);
+                //Decimos documento no encontra en vez de ID no valido por seguridad
                 return res.status(400).send({ message: "No se encontro ningun documento " });
             }
 
+            //Mandamos a buscar el documento en cuestion
             const documento = await catalagoNutricionalModel.find({ id: id.data });
 
+            //Validamos si el documento existe
+            if (!documento) {
+                //console.error(documento.error);
+                //Decimos documento no encontra en vez de ID no valido por seguridad
+                return res.status(400).send({ message: "No se encontro ningun documento " });
+            }
+            //retornamos el documento encontrado y valido
+            console.log("Documento Encontrado");
             return res.status(302).send({
                 message: "Documento encontrado",
                 documento: documento
@@ -193,33 +213,74 @@ class catalogoNutricionalController {
         } catch (error) {
             console.error(error);
             console.log("Error de conexion");
+            //Retornamos error de conexion
             return res.status(500).send({ message: "Internal Server Error" });
         }
     }
 
     static async delete(req, res) {
+        //Metodo para Eliminar un documento
         try {
-            console.log("Llamaste metodo DELETE isn't it");
+            //Validamos que el mongoID
             const id = await validarIDParams(req.params.id);
 
             if (!id.success) {
                 console.log(id.error);
                 return res.status(400).send({ message: "No se encontro ningun documento " });
             }
-
+            //Validamos que el documento a borrar exista en la coleccion
             const documento = await catalagoNutricionalModel.find({ id: id.data });
-
-            return console.log("documento encontrado", documento);
-
-            return res.status(302).send({
-                message: "Documento encontrado",
-                documento: documento
-            })
+            //Sino existe le informamos al cliente
+            if (!documento) {
+                return res.status(400).send({ message: "No se encontro ningun documento " });
+            } else {
+                //Tendriamos que enviar a preguntar si estan seguro de borrar el documento
+                //Advertir que los cambios no pueden ser cambiados
+                const documentoEliminado = await catalagoNutricionalModel.delete({ id: id.data });
+                if (documentoEliminado === 1) {
+                    console.log("Documento Eliminado");
+                    //Podria tratar de enviar un validor para enviarlos por la URL
+                    return res.status(201).send({ message: "Documento Eliminado Satisfactoriamente" })
+                } else {
+                    //Encaso de que haya algun error mostramos este mensaje
+                    return res.status(400).send({ message: "Documento no se Elimino,  Vuelve a intentarlo" });
+                };
+            }
         } catch (error) {
             console.error(error);
             console.log("Error de conexion");
+            //Retornamos error de conexion
             return res.status(500).send({ message: "Internal Server Error" });
         }
+    }
+
+    static async update(req, res) {
+        //Metodo para Actualizar
+        //Sanitizamos la request
+        const id = await validarIDParams(req.params.id);
+        const input = await validarSchemaCatalogoUpdate(req.body);
+        //validamos si el ID es valido y los datos a actualizar cumplen con el schema
+        if (!id.success) {
+            console.error(id.error);
+            //Decimos documento no encontra en vez de ID no valido por seguridad
+            return res.status(400).send({ message: "ID no valido" });
+        }
+
+        if (!input.success) {
+            console.error(id.error);
+            //Decimos documento no encontra en vez de ID no valido por seguridad
+            return res.status(400).send({ message: "Datos no validos" });
+        }
+
+        const documentoActualizado = await catalagoNutricionalModel.update({ id: id.data, input: input.data })
+        //Validamos si el documento existe
+        if (!documentoActualizado) {
+            //Validmos si el el Documento existe para actualizarlo
+            return res.status(400).send({ message: "No se encontro ningun documento" });
+        }
+        //DEBUG HERE: console.log(documentoActualizado);
+        console.log("Documento Actualizado");
+        return res.status(200).send({message: "Documento Actualizado", documentoNuevo: documentoActualizado});
     }
 
 }//End Class
