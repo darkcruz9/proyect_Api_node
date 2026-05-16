@@ -1,5 +1,4 @@
 const { MongoClient, ObjectId } = require('mongodb');
-const { da } = require('zod/locales');
 
 const url = 'mongodb://localhost:27017/';
 const client = new MongoClient(url);
