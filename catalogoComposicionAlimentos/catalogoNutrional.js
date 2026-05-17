@@ -30,7 +30,7 @@ class catalagoNutricionalModel {
         const documentoInsertado = await db.insertOne({ ...input });
         //DEBUG HERE: console.log(datos);
         //Mostramos el documento recien insertado
-        const documento = await db.findOne({ _id: datos.insertedId });
+        const documento = await db.findOne({ _id: documentoInsertado.insertedId });
         //DEBUG HERE: console.log(documento);
         return documento;
     }

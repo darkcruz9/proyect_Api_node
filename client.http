@@ -6,8 +6,8 @@ POST http://localhost:3009
 Content-Type: application/json
 
 {
-    "codigo": 10001,
-    "nombreAlimento": "prueba99",
+    "codigo": 19001,
+    "nombreAlimento": "prueba969",
     "nombreAlternos": ["Publico", "nAlterno", "langague"],
     "timeCreation": "{{$datetime iso8601}}",
     "createBy": "Darkdev9",
