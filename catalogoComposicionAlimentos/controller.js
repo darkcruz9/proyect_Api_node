@@ -68,7 +68,7 @@ class catalogoNutricionalController {
                     },
                     fibraDietTotal: {
                         unidadMedida: "gr",
-                        valor: data.data.fibraDietTotal
+                        Valor: data.data.fibraDietTotal
                     },
                     Ceniza: {
                         unidadMedida: "gr",
@@ -159,7 +159,7 @@ class catalogoNutricionalController {
                         Valor: data.data.fraccionComestible
                     }
                 },
-                estadoRegistro: 1
+                estadoRegistro: data.data.estadoRegistro
             }
 
             //Insertamos el documento a la coleccion
@@ -271,16 +271,147 @@ class catalogoNutricionalController {
             //Decimos documento no encontra en vez de ID no valido por seguridad
             return res.status(400).send({ message: "Datos no validos" });
         }
+        //Cargamos el documento encontrado
 
-        const documentoActualizado = await catalagoNutricionalModel.update({ id: id.data, input: input.data })
-        //Validamos si el documento existe
+        const documentoEncontrado = await catalagoNutricionalModel.find({ id: id.data });
+        console.log(documentoEncontrado);
+
+        //Construimos el objeto para posicionar los datos que se van a actualizar y respetar el modelo
+        const inputUpdate = {
+            codigo: input.data.codigo ?? documentoEncontrado.codigo,
+            nombreAlimento: input.data.nombreAlimento ?? documentoEncontrado.nombreAlimento,
+            nombreAlternos: input.data.nombreAlternos ?? documentoEncontrado.nombreAlternos,
+            timeCreation: input.data.timeCreation,
+            createBy: input.data.createBy ?? documentoEncontrado.createBy,
+            composicionAlimento: {
+                Agua: {
+                    unidadMedida: "%",
+                    Valor: input.data.agua ?? documentoEncontrado.composicionAlimento.Agua.Valor
+                },
+                Energia: {
+                    unidadMedida: "Kcal",
+                    Valor: input.data.energia ?? documentoEncontrado.composicionAlimento.Energia.Valor
+                },
+                "Proteina g": {
+                    unidadMedida: "gr",
+                    Valor: input.data.proteina ?? documentoEncontrado.composicionAlimento["Proteina g"].Valor
+                },
+                "Grasas Total ": {
+                    unidadMedida: "gr",
+                    Valor: input.data.grasas ?? documentoEncontrado.composicionAlimento["Grasas Total "].Valor
+                },
+                CarboHidratos: {
+                    unidadMedida: "gr",
+                    Valor: input.data.carboHidratos ?? documentoEncontrado.composicionAlimento.CarboHidratos.Valor
+                },
+                fibraDietTotal: {
+                    unidadMedida: "gr",
+                    valor: input.data.fibraDietTotal ?? documentoEncontrado.composicionAlimento.fibraDietTotal.Valor
+                },
+                Ceniza: {
+                    unidadMedida: "gr",
+                    Valor: input.data.ceniza ?? documentoEncontrado.composicionAlimento.Ceniza.Valor
+                },
+                Calcio: {
+                    unidadMedida: "mg",
+                    Valor: input.data.calcio ?? documentoEncontrado.composicionAlimento.Calcio.Valor
+                },
+                Fosforo: {
+                    unidadMedida: "mg",
+                    Valor: input.data.fosforo ?? documentoEncontrado.composicionAlimento.Fosforo.Valor
+                },
+                Hierro: {
+                    unidadMedida: "mg",
+                    Valor: input.data.hierro ?? documentoEncontrado.composicionAlimento.Hierro.Valor
+                },
+                Tiamina: {
+                    unidadMedida: "mg",
+                    Valor: input.data.tiamina ?? documentoEncontrado.composicionAlimento.Tiamina.Valor
+                },
+                riboflavina: {
+                    unidadMedida: "mg",
+                    Valor: input.data.riboflavina ?? documentoEncontrado.composicionAlimento.riboflavina.Valor
+                },
+                Niacina: {
+                    unidadMedida: "mg",
+                    Valor: input.data.niacina ?? documentoEncontrado.composicionAlimento.Niacina.Valor
+                },
+                vitaminaC: {
+                    unidadMedida: "mg",
+                    Valor: input.data.vitaminaC ?? documentoEncontrado.composicionAlimento.vitaminaC.Valor
+                },
+                vitaminaARetinol: {
+                    unidadMedida: "mcg",
+                    Valor: input.data.vitaminaARetinol ?? documentoEncontrado.composicionAlimento.vitaminaARetinol.Valor
+                },
+                acGrasosMonInsaturados: {
+                    unidadMedida: "g",
+                    Valor: input.data.acGrasosMonSaturados ?? documentoEncontrado.composicionAlimento.acGrasosMonInsaturados.Valor
+                },
+                acGrasosPolInsaturados: {
+                    unidadMedida: "g",
+                    Valor: input.data.acGrasosPolSaturados ?? documentoEncontrado.composicionAlimento.acGrasosPolInsaturados.Valor
+                },
+                acGrasosSaturados: {
+                    unidadMedida: "g",
+                    Valor: input.data.acGrasosSaturados ?? documentoEncontrado.composicionAlimento.acGrasosSaturados.Valor
+                },
+                Colesterol: {
+                    unidadMedida: "mg",
+                    Valor: input.data.colesterol ?? documentoEncontrado.composicionAlimento.Colesterol.Valor
+                },
+                Potasio: {
+                    unidadMedida: "mg",
+                    Valor: input.data.potasio ?? documentoEncontrado.composicionAlimento.Potasio.Valor
+                },
+                Sodio: {
+                    unidadMedida: "mg",
+                    Valor: input.data.sodio ?? documentoEncontrado.composicionAlimento.Sodio.Valor
+                },
+                Zinc: {
+                    unidadMedida: "mg",
+                    Valor: input.data.zinc ?? documentoEncontrado.composicionAlimento.Zinc.Valor
+                },
+                magnesio: {
+                    unidadMedida: "mg",
+                    Valor: input.data.magnesio ?? documentoEncontrado.composicionAlimento.magnesio.Valor
+                },
+                vitaminaB6: {
+                    unidadMedida: "mg",
+                    Valor: input.data.vitaminaB6 ?? documentoEncontrado.composicionAlimento.vitaminaB6.Valor
+                },
+                vitaminaB12: {
+                    unidadMedida: "mcg",
+                    Valor: input.data.vitaminaB12 ?? documentoEncontrado.composicionAlimento.vitaminaB12.Valor
+                },
+                acidoFolico: {
+                    unidadMedida: "mcg",
+                    Valor: input.data.acidoFolico ?? documentoEncontrado.composicionAlimento.acidoFolico.Valor
+                },
+                folatoEquFD: {
+                    unidadMedida: "mcg",
+                    Valor: input.data.folatoEquFD ?? documentoEncontrado.composicionAlimento.folatoEquFD.Valor
+                },
+                fraccionComestible: {
+                    unidadMedida: "%",
+                    Valor: input.data.fraccionComestible ?? documentoEncontrado.composicionAlimento.fraccionComestible.Valor
+                }
+            },
+            estadoRegistro: input.data.estadoRegistro ?? documentoEncontrado.estadoRegistro
+        }
+
+        //Enviamos el documento ha actualizar
+        const documentoActualizado = await catalagoNutricionalModel.update({ id: id.data, input: inputUpdate });
+
+        //Validamos si el documento se ha actualizado ya que deberia retorar un objeto diferente de null
         if (!documentoActualizado) {
             //Validmos si el el Documento existe para actualizarlo
             return res.status(400).send({ message: "No se encontro ningun documento" });
         }
+
         //DEBUG HERE: console.log(documentoActualizado);
         console.log("Documento Actualizado");
-        return res.status(200).send({message: "Documento Actualizado", documentoNuevo: documentoActualizado});
+        return res.status(200).send({ message: "Documento Actualizado", documentoNuevo: documentoActualizado });
     }
 
 }//End Class

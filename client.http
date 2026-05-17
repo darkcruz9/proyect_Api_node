@@ -40,10 +40,10 @@ Content-Type: application/json
     "folatoEquFD": 0.0,
     "fraccionComestible": 0.69,
     "estadoRegistro": 1
-}
+} 
 
 ### GET by ID
-GET http://localhost:3009/6a067d3ab6a988bbbd414440
+GET http://localhost:3009/6a0536ba500bbb9a2320f854
 
 ### DELETE
 DELETE http://localhost:3009/6a0536ba500bbb9a2320f854
@@ -53,14 +53,43 @@ DELETE http://localhost:3009/6a0536ba500bbb9a2320f854
 6a027440b06c3ef12d5d463b
 
 ### UPDATE
-PUT http://localhost:3009/6a0536ba500bbb9a2320f854
+PATCH  http://localhost:3009/6a067eea42f84f5310fb1372
 Content-Type: application/json
 
 {
-    "codigo": 10001,
-    "nombreAlimento": "Updateprueba99VSCODE",
-    "nombreAlternos": ["UpdatePublico", "UpdatednAlterno"],
+    "codigo": 10991,
+    "nombreAlimento": "prueba99VSCODEPATCH",
+    "nombreAlternos": ["PATCHublico", "PATCHnAlterno", "PATCHlangague"],
     "timeCreation": "{{$datetime iso8601}}",
     "createBy": "Darkdev9",
+    "agua": 0.32,
+    "energia": 3.9,
+    "proteina": 1.69,
+    "grasas": 0.0,
+    "carboHidratos": 0.0,
+    "fibraDietTotal": 0.0,
+    "ceniza": 0.0,
+    "calcio": 0.13,
+    "fosforo": 0.0,
+    "hierro": 0.0,
+    "tiamina": 0.0,
+    "riboflavina": 0.0,
+    "niacina": 0.0,
+    "vitaminaC": 0.0,
+    "vitaminaARetinol": 0.15,
+    "acGrasosMonSaturados": 0.69,
+    "acGrasosPolSaturados": 0.49,
+    "acGrasosSaturados": 0.0,
+    "colesterol": 0.0,
+    "potasio": 0.0,
+    "sodio": 0.0,
+    "zinc": 0.0,
+    "magnesio": 0.0,
+    "vitaminaB6": 0.0,
+    "vitaminaB12": 0.0,
+    "acidoFolico": 0.0,
+    "folatoEquFD": 0.0,
+    "fraccionComestible": 0.69,
+    "estadoRegistro": 1,
     "URL": "DROP TABLE collection"
 }
