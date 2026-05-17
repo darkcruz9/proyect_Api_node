@@ -10,7 +10,7 @@ class catalogoNutricionalController {
             //Metodo para leer todos los datos de la collection
             const datos = await catalagoNutricionalModel.read();
             if (datos.length === 0) {
-                return res.status(400).send({ message: "No se hay datos o no se lograron leer" });
+                return res.status(400).send({ message: "No hay datos o no se lograron leer" });
             }
             //DEBUG HERE: console.log(datos) 
             //Retornamos los datos y codigo
@@ -192,7 +192,7 @@ class catalogoNutricionalController {
             if (!id.success) {
                 console.error(id.error);
                 //Decimos documento no encontra en vez de ID no valido por seguridad
-                return res.status(400).send({ message: "No se encontro ningun documento " });
+                return res.status(400).send({ message: "ID no Valido" });
             }
 
             //Mandamos a buscar el documento en cuestion
@@ -202,7 +202,7 @@ class catalogoNutricionalController {
             if (!documento) {
                 //console.error(documento.error);
                 //Decimos documento no encontra en vez de ID no valido por seguridad
-                return res.status(400).send({ message: "No se encontro ningun documento " });
+                return res.status(400).send({ message: "No se encontro ningun documento" });
             }
             //retornamos el documento encontrado y valido
             console.log("Documento Encontrado");
@@ -274,8 +274,7 @@ class catalogoNutricionalController {
         //Cargamos el documento encontrado
 
         const documentoEncontrado = await catalagoNutricionalModel.find({ id: id.data });
-        console.log(documentoEncontrado);
-
+        
         //Construimos el objeto para posicionar los datos que se van a actualizar y respetar el modelo
         const inputUpdate = {
             codigo: input.data.codigo ?? documentoEncontrado.codigo,
